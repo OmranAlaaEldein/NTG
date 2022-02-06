@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_PublishTargetUrl>C:\Users\Omran Alaa Eldein\Desktop\ntg</_PublishTargetUrl>
+    <History>True|2022-02-06T03:26:55.4466500Z;True|2022-02-06T05:11:43.3267439+02:00;</History>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="NTGConntection">
+      <Value>Server=DESKTOP-H6CDR6E%3bDatabase=NTG%3bTrusted_Connection=False%3bUser id=omran%3bPassword=omran</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+</Project>
