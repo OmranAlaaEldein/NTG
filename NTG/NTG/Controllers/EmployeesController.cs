@@ -62,14 +62,14 @@ namespace NTG.Controller
             int DepartmentiD = employee.MyDepartment.DepartmentId;
             employee.MyDepartment = _context.Departments.Find(DepartmentiD);
 
-            var sentFile = null ;//Request.Form != null ? Request.Form.Files[0] : null;
+            /*var sentFile  =Request.Form != null ? Request.Form.Files[0] : null;
             if (sentFile != null)
             {
                 var physicalPath = _Hosting.ContentRootPath + "/images/" + employee.PhotoPath;
                 System.IO.File.Delete(physicalPath);
                 physicalPath = _Hosting.ContentRootPath + "/images" + sentFile.FileName;
                 sentFile.CopyTo(new FileStream(physicalPath, FileMode.Create));
-            }
+            }*/
 
             _context.Entry(employee).State = EntityState.Modified;
 
@@ -98,17 +98,17 @@ namespace NTG.Controller
             int DepartmentiD = employee.MyDepartment.DepartmentId;
             employee.MyDepartment = _context.Departments.Find(DepartmentiD);
 
-            var sentFile = null ;//Request.Form != null ? Request.Form.Files[0] : null;
+            /*var sentFile  =Request.Form != null ? Request.Form.Files[0] : null;
             if (sentFile!=null)
             {
                 var physicalPath = _Hosting.ContentRootPath + "/images" + sentFile.FileName;
                 sentFile.CopyTo(new FileStream(physicalPath, FileMode.Create));
-            }
+            }*/
 
             _context.Employees.Add(employee);
              _context.SaveChanges();
 
-            return new JsonResult("success");//CreatedAtAction("GetEmployee", new { id = employee.EmployeeId }, employee);
+            return new JsonResult("success");
         }
 
         [HttpDelete("{id}")]

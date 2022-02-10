@@ -7449,11 +7449,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Omran Alaa Eldein\\source\\repos\\NTG\\NTG\\NTG.csproj",
+      "projectUniqueName": "D:\\learn\\work\\NTG\\ntg test\\NTG\\NTG\\NTG.csproj",
       "projectName": "NTG",
-      "projectPath": "C:\\Users\\Omran Alaa Eldein\\source\\repos\\NTG\\NTG\\NTG.csproj",
+      "projectPath": "D:\\learn\\work\\NTG\\ntg test\\NTG\\NTG\\NTG.csproj",
       "packagesPath": "C:\\Users\\Omran Alaa Eldein\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Omran Alaa Eldein\\source\\repos\\NTG\\NTG\\obj\\",
+      "outputPath": "D:\\learn\\work\\NTG\\ntg test\\NTG\\NTG\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Omran Alaa Eldein\\AppData\\Roaming\\NuGet\\NuGet.Config",

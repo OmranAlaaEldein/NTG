@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ssy514O9QLaYVfuWBkn/xFePISKpJ9ChvCl0uCqwmnYwT5xTKFC6x6Xrm7eqRafT9fYQv+fk0x08wyTNVDCzvg==",
+  "dgSpecHash": "QgGJXLizWdp2wNsieM6y6zoGJucld7NTtm4+3Cg16PtV9/ES7i5SuSr/jTYdJjrw5YBRlYSkbp7R4jxFtqdDYA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Omran Alaa Eldein\\source\\repos\\NTG\\NTG\\NTG.csproj",
+  "projectFilePath": "D:\\learn\\work\\NTG\\ntg test\\NTG\\NTG\\NTG.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Omran Alaa Eldein\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\Omran Alaa Eldein\\.nuget\\packages\\microsoft.aspnetcore.html.abstractions\\2.2.0\\microsoft.aspnetcore.html.abstractions.2.2.0.nupkg.sha512",
