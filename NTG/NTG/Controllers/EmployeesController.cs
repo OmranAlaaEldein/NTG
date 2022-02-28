@@ -28,6 +28,7 @@ namespace NTG.Controller
         public JsonResult GetEmployees()
         {
             var res = _context.Employees.Include(x => x.MyDepartment).ToList();
+            //res.ForEach(e => e.PhotoPath=(e.PhotoPath != "" && e.PhotoPath != null)? _Hosting.ContentRootPath + "/images/" + e.PhotoPath : "anyone.png");
             return new JsonResult(res);
         }
 
@@ -52,27 +53,35 @@ namespace NTG.Controller
         }
 
         [HttpPut("{id}")]
-        public JsonResult PutEmployee(int id, Employee employee)
+        public JsonResult PutEmployee(int id)
         {
+            Employee employee = new Employee();
+            employee.EmployeeId=Convert.ToInt32( HttpContext.Request.Form["EmployeeId"]);
             if (id != employee.EmployeeId)
             {
                 return new JsonResult("error");
             }
 
-            int DepartmentiD = employee.MyDepartment.DepartmentId;
-            employee.MyDepartment = _context.Departments.Find(DepartmentiD);
+            employee.FName = HttpContext.Request.Form["FName"];
+            employee.LName = HttpContext.Request.Form["LName"];
+            employee.Address = HttpContext.Request.Form["Address"];
+            employee.Email = HttpContext.Request.Form["Email"];
+            employee.PhoneNumber = HttpContext.Request.Form["PhoneNumber"];
+            employee.PhotoPath= HttpContext.Request.Form["PhotoPath"];
+            employee.DateJoin = Convert.ToDateTime(HttpContext.Request.Form["DateJoin"].ToString());
+            var DepartmentId = Convert.ToInt32(HttpContext.Request.Form["MyDepartment"]);
+            employee.MyDepartment = _context.Departments.Find(DepartmentId);
 
-            /*var sentFile  =Request.Form != null ? Request.Form.Files[0] : null;
+            var sentFile  =  (Request.Form != null && Request.Form.Files.Count>0) ? HttpContext.Request.Form.Files[0] : null;
             if (sentFile != null)
             {
                 var physicalPath = _Hosting.ContentRootPath + "/images/" + employee.PhotoPath;
                 System.IO.File.Delete(physicalPath);
-                physicalPath = _Hosting.ContentRootPath + "/images" + sentFile.FileName;
+                physicalPath = _Hosting.ContentRootPath + "/images/" + sentFile.FileName;
                 sentFile.CopyTo(new FileStream(physicalPath, FileMode.Create));
-            }*/
+            }
 
             _context.Entry(employee).State = EntityState.Modified;
-
             try
             {
                  _context.SaveChanges();
@@ -88,25 +97,37 @@ namespace NTG.Controller
                     throw;
                 }
             }
-
             return new JsonResult("Success");
         }
 
         [HttpPost]
-        public JsonResult PostEmployee(Employee employee)
+        public JsonResult PostEmployee( )
         {
-            int DepartmentiD = employee.MyDepartment.DepartmentId;
-            employee.MyDepartment = _context.Departments.Find(DepartmentiD);
+            Employee employee = new Employee();
 
-            /*var sentFile  =Request.Form != null ? Request.Form.Files[0] : null;
+            employee.FName=HttpContext.Request.Form["FName"];
+            employee.LName=HttpContext.Request.Form["LName"];
+            employee.Address=HttpContext.Request.Form["Address"];
+            employee.Email=HttpContext.Request.Form["Email"];
+            employee.PhoneNumber=HttpContext.Request.Form["PhoneNumber"];
+            employee.DateJoin=Convert.ToDateTime(HttpContext.Request.Form["DateJoin"].ToString());
+            var DepartmentId = Convert.ToInt32(HttpContext.Request.Form["MyDepartment"]);
+            employee.MyDepartment = _context.Departments.Find(DepartmentId);
+
+            var sentFile  =  (Request.Form != null && Request.Form.Files.Count>0) ? HttpContext.Request.Form.Files[0] : null;
             if (sentFile!=null)
             {
-                var physicalPath = _Hosting.ContentRootPath + "/images" + sentFile.FileName;
+                var physicalPath = _Hosting.ContentRootPath + "/images/" + sentFile.FileName;
                 sentFile.CopyTo(new FileStream(physicalPath, FileMode.Create));
-            }*/
+                employee.PhotoPath = sentFile.FileName;
+            }
+            else
+            {
+                employee.PhotoPath = "anyone.png";
+            }
 
             _context.Employees.Add(employee);
-             _context.SaveChanges();
+            _context.SaveChanges();
 
             return new JsonResult("success");
         }
@@ -120,15 +141,13 @@ namespace NTG.Controller
                 return new JsonResult("error");
             }
 
-            if (employee.PhotoPath != null)
+            if (employee.PhotoPath != null && employee.PhotoPath!= "anyone.png")
             {
                 var physicalPath = _Hosting.ContentRootPath + "/images/" + employee.PhotoPath;
                 System.IO.File.Delete(physicalPath);
             }
             _context.Employees.Remove(employee);
             _context.SaveChanges();
-
-
 
             return new JsonResult("");
         }

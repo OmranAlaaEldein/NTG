@@ -234,7 +234,7 @@ export class Department extends Component{
                                 <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
 
-                            <div className="modal-body">s
+                            <div className="modal-body">
                                 <div className="input-group mb-3">
                                     <span className="input-group-text">DepartmentName</span>
                                     <input type="text" className="form-control" value={DepartmentName} onChange={this.changeDepartmentName}/>

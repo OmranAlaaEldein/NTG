@@ -1,10 +1,18 @@
-valid
-upload image
-component to form
-design
-
-edit + cascade
+component to form + edit + cascade
+-------------------------
 soid
-migration
-
 digram
+error
+lib to valid
+---------------------
+mvc:
+Qstring/body
+route
+from
+buffer:small
+stream:big file
+
+
+api:
+Qstring to prim/body to complex
+form

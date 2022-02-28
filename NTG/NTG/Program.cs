@@ -13,7 +13,8 @@ namespace NTG
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            var WebHost = CreateHostBuilder(args).Build();
+            WebHost.Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

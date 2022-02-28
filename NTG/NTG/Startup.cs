@@ -11,6 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 namespace NTG
 {
@@ -57,6 +59,12 @@ namespace NTG
                 app.UseExceptionHandler("/Error");
             }
 
+            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetService <NTGDbContext> ();
+                context.Database.Migrate();
+            }
+
             app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseStaticFiles();
             app.UseRouting();
@@ -65,6 +73,13 @@ namespace NTG
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();  //endpoints.MapRazorPages();
+            });
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                   Path.Combine(Directory.GetCurrentDirectory(), "images")),
+                RequestPath = "/images"
             });
         }
     }

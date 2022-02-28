@@ -15,11 +15,11 @@ export class Employee extends Component {
             LName:"",
             MyDepartment: "",
             DateJoin: {},
-            PhotoFileName:"anonymous.png",
-            PhotoPath:variables.PHOTO_URL,
+            PhotoPath:"anyone.png",
             PhoneNumber:"",
             Email:"",
-            Address:""
+            Address:"",
+            PhotoformData:""
         }
     }
 
@@ -34,7 +34,7 @@ export class Employee extends Component {
         fetch(variables.API_URL + 'departments')
             .then(response => response.json())
             .then(data => {
-                this.setState({ Department: data });
+                this.setState({ Department: data});
             });
     }
 
@@ -64,8 +64,13 @@ export class Employee extends Component {
     changeAddress = (e) => {
         this.setState({ Address: e.target.value });
     }
-    PhotoPath = (e) => {
+    /*PhotoPath = (e) => {
         this.setState({ PhotoPath: e.target.value });
+    }*/
+    imageUpload = (e) => {
+        e.preventDefault();
+        this.setState({ PhotoformData: e.target.files[0] });
+        document.getElementById("imageEmployee").src = URL.createObjectURL(e.target.files[0]);
     }
 
     addClick() {
@@ -74,12 +79,12 @@ export class Employee extends Component {
             EmployeeId: 0,
             FName: "",
             LName: "",
-            MyDepartment: "",
+            MyDepartment: this.state.Department[0],
             DateJoin: "",
             PhoneNumber:"",
             Email:"",
             Address:"",
-            PhotoFileName: "anonymous.png"
+            PhotoPath: "anyone.png"
         });
     }
     editClick(emp) {
@@ -98,59 +103,83 @@ export class Employee extends Component {
     }
 
     createClick() {
-        fetch(variables.API_URL + 'employees', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                FName: this.state.FName,
-                LName: this.state.LName,
-                MyDepartment: this.state.MyDepartment,
-                DateJoin: this.state.DateJoin,
-                PhotoPath: this.state.PhotoPath,
-                PhoneNumber:this.state.PhoneNumber,
-                Email:this.state.Email,
-                Address:this.state.Address
+        if (this.state.FName.length > 1 && this.state.FName.length < 21
+            && this.state.LName.length > 1 && this.state.LName.length < 21
+            && this.state.DateJoin != ""
+            && this.state.MyDepartment != null
+            && this.state.Email != ""
+            && (/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(this.state.Email))        ) {
+            const formData = new FormData();
+            formData.append('FName', this.state.FName);
+            formData.append('LName', this.state.LName);
+            formData.append('MyDepartment', this.state.MyDepartment.DepartmentId);
+            formData.append('DateJoin', this.state.DateJoin);
+            formData.append('PhoneNumber', this.state.PhoneNumber);
+            formData.append('Email', this.state.Email);
+            formData.append('Address', this.state.Address);
+            formData.append('file', this.state.PhotoformData, this.state.PhotoformData.name);
+
+            fetch(variables.API_URL + 'employees', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json'
+                },
+                body: formData
             })
-        })
-            .then(res => res.json())
-            .then((result) => {
-                alert(result);
-                this.refreshList();
-            }, (error) => {
-                alert('Failed');
-            })
+                .then(res => res.json())
+                .then((result) => {
+                    alert(result);
+                    this.refreshList();
+                    //document.getElementById('exampleModal').modal('toggle');
+                }, (error) => {
+                    alert('Failed');
+                })
+        }
+        else {
+            alert("error in input");
+        }
     }
 
 
     updateClick() {
-        fetch(variables.API_URL + 'employees/'+this.state.EmployeeId, {
-            method: 'PUT',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                EmployeeId: this.state.EmployeeId,
-                FName: this.state.FName,
-                LName: this.state.LName,
-                MyDepartment: this.state.MyDepartment,
-                DateJoin: this.state.DateJoin,
-                PhotoPath: this.state.PhotoPath,
-                PhoneNumber:this.state.PhoneNumber,
-                Email:this.state.Email,
-                Address:this.state.Address
+        if (this.state.FName.length > 1 && this.state.FName.length < 21
+            && this.state.LName.length > 1 && this.state.LName.length < 21
+            && this.state.DateJoin != ""
+            && this.state.MyDepartment != null
+            && this.state.Email != ""
+            && (/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(this.state.Email)) ) {
+            const formData = new FormData();
+            formData.append('EmployeeId', this.state.EmployeeId);
+            formData.append('FName', this.state.FName);
+            formData.append('LName', this.state.LName);
+            formData.append('MyDepartment', this.state.MyDepartment.DepartmentId);
+            formData.append('DateJoin', this.state.DateJoin);
+            formData.append('PhoneNumber', this.state.PhoneNumber);
+            formData.append('Email', this.state.Email);
+            formData.append('Address', this.state.Address);
+            formData.append('PhotoPath', this.state.PhotoPath);
+            if(this.state.PhotoformData != null && this.state.PhotoformData != "")
+                formData.append('file', this.state.PhotoformData, this.state.PhotoformData.name);
+
+            fetch(variables.API_URL + 'employees/' + this.state.EmployeeId, {
+                method: 'PUT',
+                headers: {
+                    'Accept': 'application/json'
+                },
+                body: formData
             })
-        })
-            .then(res => res.json())
-            .then((result) => {
-                alert(result);
-                this.refreshList();
-            }, (error) => {
-                alert('Failed');
-            })
+                .then(res => res.json())
+                .then((result) => {
+                    alert(result);
+                    this.refreshList();
+                    //$('#modal').modal('toggle');
+                }, (error) => {
+                    alert('Failed');
+                })
+        }
+        else {
+            alert("error in  input");
+        }
     }
 
     deleteClick(id) {
@@ -172,22 +201,6 @@ export class Employee extends Component {
         }
     }
 
-    imageUpload = (e) => {
-        e.preventDefault();
-
-        const formData = new FormData();
-        formData.append("file", e.target.files[0], e.target.files[0].name);
-
-        fetch(variables.API_URL + 'employee/savefile', {
-            method: 'POST',
-            body: formData
-        })
-            .then(res => res.json())
-            .then(data => {
-                this.setState({ PhotoPath: data });
-            })
-    }
-
     render() {
         const {
             Department,
@@ -199,7 +212,6 @@ export class Employee extends Component {
             MyDepartment,
             DateJoin,
             PhotoPath,
-            PhotoFileName,
             PhoneNumber,
             Email,
             Address
@@ -207,8 +219,7 @@ export class Employee extends Component {
 
         return (
             <div>
-
-                <button type="button" className="btn btn-primary m-2 float-end" data-bs-toggle="modal" data-bs-target="#exampleModal"onClick={() => this.addClick()}>
+                <button type="button" className="btn btn-primary m-2 float-end" data-bs-toggle="modal" data-bs-target="#exampleModal" onClick={() => this.addClick()}>
                     Add Employee
                 </button>
                 <table className="table table-striped">
@@ -230,18 +241,22 @@ export class Employee extends Component {
                                 Email
                             </th>
                             <th>
+                            EmployeeId
+                            </th>
+                            <th>
                                 Options
                             </th>
                         </tr>
                     </thead>
                     <tbody>
                         {employees.map(emp =>
-                            <tr key={emp.EmployeeId}>
+                        <tr key={emp.EmployeeId}>
                                 <td>{emp.FName}</td>
                                 <td>{emp.LName}</td>
                                 <td>{emp.MyDepartment!=null?emp.MyDepartment.DepartmentName:""}</td>
                                 <td>{emp.DateJoin.substring(0,10)}</td>
                                 <td>{emp.Email}</td>
+                                <td>{emp.EmployeeId}</td>
                                 <td>
                                     <button type="button" className="btn btn-light mr-1" data-bs-toggle="modal" data-bs-target="#exampleModal" onClick={() => this.editClick(emp)}>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil-square" viewBox="0 0 16 16">
@@ -273,12 +288,12 @@ export class Employee extends Component {
                                     <div className="p-2 w-50 bd-highlight">
                                         <div className="input-group mb-3">
                                             <span className="input-group-text">Emp FName</span>
-                                            <input type="text" className="form-control" value={FName} onChange={this.changeEmployeeFName} />
+                                            <input type="text" className="form-control" value={FName} onChange={this.changeEmployeeFName} maxLength="20" required />
                                         </div>
 
                                         <div className="input-group mb-3">
                                             <span className="input-group-text">Emp LName</span>
-                                            <input type="text" className="form-control" value={LName} onChange={this.changeEmployeeLName} />
+                                            <input type="text" className="form-control" value={LName} onChange={this.changeEmployeeLName} maxLength="20" required />
                                         </div>
                                         <div className="input-group mb-3">
                                             <span className="input-group-text">Emp PhoneNumber</span>
@@ -286,7 +301,7 @@ export class Employee extends Component {
                                         </div>
                                         <div className="input-group mb-3">
                                             <span className="input-group-text">Emp Email</span>
-                                            <input type="email" className="form-control" value={Email} onChange={this.changeEmail} />
+                                            <input type="email" className="form-control" value={Email} onChange={this.changeEmail} required />
                                         </div>
                                         <div className="input-group mb-3">
                                             <span className="input-group-text">Emp Address</span>
@@ -295,18 +310,18 @@ export class Employee extends Component {
 
                                         <div className="input-group mb-3">
                                             <span className="input-group-text">MyDepartment</span>
-                                            <select className="form-select" onChange={this.changeDepartment} value={MyDepartment.DepartmentName}> {Department.map(dep => <option id={dep.DepartmentId}  > {dep.DepartmentName} </option>)}
-                                            </select>
+                                            <select required className="form-select" onChange={this.changeDepartment} value={this.state.MyDepartment.DepartmentName}> {Department.map(dep => <option id={dep.DepartmentId}  > {dep.DepartmentName} </option>)}
+                                                </select>
                                         </div>
 
                                         <div className="input-group mb-3">
                                             <span className="input-group-text">DOJ</span>
-                                            <input type="date" className="form-control" value={typeof(DateJoin)=="string" ? DateJoin.substring(0,10):""} onChange={this.changeDateOfJoining} />
+                                            <input type="date" className="form-control" value={typeof (DateJoin) == "string" ? DateJoin.substring(0, 10) : ""} onChange={this.changeDateOfJoining} required />
                                         </div>
                                     </div>
                                     <div className="p-2 w-50 bd-highlight">
-                                        <img width="250px" height="250px"
-                                            src={PhotoPath + PhotoPath} />
+                                        <img width="250px" height="250px" id="imageEmployee"
+                                            src={variables.API_URL_images+this.state.PhotoPath} />
                                         <input className="m-2" type="file" onChange={this.imageUpload} />
                                     </div>
                                 </div>

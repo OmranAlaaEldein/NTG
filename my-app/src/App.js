@@ -2,7 +2,6 @@ import './App.css';
 import {Employee} from "./Employee";
 import {Department} from "./Department";
 import {BrowserRouter,Route,Routes,NavLink} from "react-router-dom";
- 
 
 function App() {
   return (
@@ -23,11 +22,12 @@ function App() {
                 </NavLink>
               </li>
             </ul>
-            <Routes>
-              <Route path="/department"  element={<Department />} ></Route>
-              <Route path="/employee" element={<Employee />}   ></Route>
-            </Routes>
-            </nav>
+            
+              </nav>
+              <Routes>
+                  <Route path="/department" element={<Department />} ></Route>
+                  <Route path="/employee" element={<Employee />}   ></Route>
+              </Routes>
       </div>
     </BrowserRouter>
   );
