@@ -1,10 +1,9 @@
-component to form + edit + cascade
--------------------------
 soid
-digram
-error
 lib to valid
+digram
 ---------------------
+info sent data to api/mvc 
+
 mvc:
 Qstring/body
 route
